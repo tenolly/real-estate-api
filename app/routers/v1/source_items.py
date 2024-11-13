@@ -35,7 +35,7 @@ async def get_source_by_uuid(uid: UUID, db: AsyncSession = Depends(get_async_db)
     return source
 
 
-@source_items_router.post("/", response_model=SourceItem)
+@source_items_router.post("/new", response_model=SourceItem)
 async def create_source(request: SourceCreateRequest, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.url == str(request.url)))
     source = result.scalar_one_or_none()
