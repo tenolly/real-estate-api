@@ -5,15 +5,15 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from models import SourceModel
-from schemas.url import SourceItem, SourceCreateRequest
+from schemas.source import SourceItem, SourceCreateRequest
 from database import get_async_db
 
 
-urls_router = APIRouter(prefix="/urls")
-URLS_LOGGER = logging.getLogger(__name__)
+source_items_router = APIRouter(prefix="/source-items")
+SOURCE_ITEMS_LOGGER = logging.getLogger(__name__)
 
 
-@urls_router.get("/", response_model=SourceItem)
+@source_items_router.get("/", response_model=SourceItem)
 async def get_source_by_url(url: HttpUrl, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.url == str(url)))
     source = result.scalar_one_or_none()
@@ -24,7 +24,7 @@ async def get_source_by_url(url: HttpUrl, db: AsyncSession = Depends(get_async_d
     return source
 
 
-@urls_router.get("/{uid}", response_model=SourceItem)
+@source_items_router.get("/{uid}", response_model=SourceItem)
 async def get_source_by_uuid(uid: UUID, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.uid == uid))
     source = result.scalar_one_or_none()
@@ -35,7 +35,7 @@ async def get_source_by_uuid(uid: UUID, db: AsyncSession = Depends(get_async_db)
     return source
 
 
-@urls_router.post("/", response_model=SourceItem)
+@source_items_router.post("/", response_model=SourceItem)
 async def create_source(request: SourceCreateRequest, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.url == str(request.url)))
     source = result.scalar_one_or_none()
@@ -51,7 +51,7 @@ async def create_source(request: SourceCreateRequest, db: AsyncSession = Depends
     return new_source
 
 
-@urls_router.post("/", response_model=SourceItem)
+@source_items_router.post("/", response_model=SourceItem)
 async def get_and_update_source_by_url(url: HttpUrl, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.url == str(url)))
     source = result.scalar_one_or_none()
@@ -67,7 +67,7 @@ async def get_and_update_source_by_url(url: HttpUrl, db: AsyncSession = Depends(
     return source
 
 
-@urls_router.post("/{uid}", response_model=SourceItem)
+@source_items_router.post("/{uid}", response_model=SourceItem)
 async def get_and_update_source_by_uuid(uid: UUID, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.uid == uid))
     source = result.scalar_one_or_none()
@@ -83,7 +83,7 @@ async def get_and_update_source_by_uuid(uid: UUID, db: AsyncSession = Depends(ge
     return source
 
 
-@urls_router.delete("/{uid}")
+@source_items_router.delete("/{uid}")
 async def delete_source(uid: UUID, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.uid == uid))
     source = result.scalar_one_or_none()
