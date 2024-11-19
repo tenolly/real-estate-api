@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import UUID, Column, String, Text, TIMESTAMP, Boolean
 
-from database import Base
+from . import Base
 
 
 class SourceModel(Base):

@@ -1,8 +1,8 @@
 import os
 import logging
+
 from fastapi import FastAPI
 
-from database import init_db
 from routers.v1 import v1_router
 from parsers.core import ParserManager
 
@@ -14,12 +14,10 @@ logging.basicConfig(
 )
 
 
-async def startup():
-    ParserManager.load_parsers_from_yaml(
-        os.path.join(os.path.dirname(__file__), "providers.yaml")
-    )
-    await init_db()
+ParserManager.load_parsers_from_yaml(
+    os.path.join(os.path.dirname(__file__), "providers.yaml")
+)
 
 
-app = FastAPI(on_startup=[startup])
+app = FastAPI()
 app.include_router(v1_router)

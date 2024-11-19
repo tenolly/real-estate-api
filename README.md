@@ -11,4 +11,6 @@ docker system prune --all --volumes
 ```
 
 # tests
-Doesn't work now
+```bash
+pytest
+```

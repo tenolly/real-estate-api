@@ -9,7 +9,7 @@ class SourceItem(BaseModel):
     source_type: str
     last_check_ts: Optional[int] = None
     is_publicated: Optional[bool] = False
-    price: str
+    price: Optional[str] = None
 
     class Config:
         from_attributes = True

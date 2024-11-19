@@ -1,4 +1,4 @@
 parsers:
 -   source_type: avito
-    url_pattern: ^https://www\.avito\.ru/.*
+    url_pattern: ^https:\/\/www\.avito\.ru(\/[\w\-._~:\/?#[\]@!$&'()*+,;=]*)?$
     parser_class: parsers.AvitoParser

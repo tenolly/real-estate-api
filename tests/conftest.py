@@ -5,38 +5,40 @@ from httpx import AsyncClient
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
-from app.main import app, Base, get_async_db
-from app.config import get_config
+from app.main import app
+from models import Base
+from database import TEST_DATABASE_URL, get_async_db
 
 
-engine = create_async_engine(get_config().DATABASE_URL, echo=True)
-
-AsyncSessionLocal = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False
+test_async_engine = create_async_engine(TEST_DATABASE_URL, echo=True)
+TestAsyncSessionLocal = sessionmaker(
+    bind=test_async_engine, class_=AsyncSession, expire_on_commit=False
 )
+
 
 @pytest.fixture(scope="module")
 async def setup_database():
-    async with engine.begin() as conn:
+    async with test_async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
     yield
-    
-    async with engine.begin() as conn:
+
+    async with test_async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture(scope="module")
-async def test_db():
-    async with AsyncSessionLocal() as session:
-        async with session.begin():
-            yield session
+@pytest.fixture(scope="function")
+async def test_db(setup_database):
+    async with TestAsyncSessionLocal() as session:
+        yield session
 
 
-@pytest.fixture(scope="module")
-async def client():
+@pytest.fixture(scope="function")
+async def client(setup_database, test_db):
+    async def _test_get_async_db():
+        yield test_db
+
+    app.dependency_overrides[get_async_db] = _test_get_async_db
     async with AsyncClient(app=app, base_url="http://test") as client:
         yield client
 
@@ -45,3 +47,8 @@ async def client():
 def event_loop():
     loop = get_event_loop()
     yield loop
+
+
+@pytest.fixture(scope="module")
+def anyio_backend():
+    return "asyncio"

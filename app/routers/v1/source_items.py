@@ -2,6 +2,7 @@ import logging
 from uuid import UUID
 from typing import Optional
 
+from fastapi.responses import JSONResponse
 from pydantic import HttpUrl
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,13 +29,17 @@ SOURCE_ITEMS_LOGGER = logging.getLogger(__name__)
 @source_items_router.get("/", response_model=SourceItem)
 async def get_source_by_url(url: HttpUrl, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.url == str(url)))
-    return raise_if_none(result.scalar_one_or_none(), SourceNotFoundException())
+    return SourceItem.model_validate(
+        raise_if_none(result.scalar_one_or_none(), SourceNotFoundException())
+    )
 
 
 @source_items_router.get("/{uid}", response_model=SourceItem)
 async def get_source_by_uuid(uid: UUID, db: AsyncSession = Depends(get_async_db)):
     result = await db.execute(select(SourceModel).filter(SourceModel.uid == uid))
-    return raise_if_none(result.scalar_one_or_none(), SourceNotFoundException())
+    return SourceItem.model_validate(
+        raise_if_none(result.scalar_one_or_none(), SourceNotFoundException())
+    )
 
 
 @source_items_router.post("/", response_model=SourceItem)
@@ -61,13 +66,11 @@ async def create_or_get_and_update_source(
         await db.commit()
         await db.refresh(new_source)
 
-        return new_source
+        return SourceItem.model_validate(new_source)
     elif url:
         result = await db.execute(
             select(SourceModel).filter(SourceModel.url == str(url))
         )
-        source = raise_if_none(result.scalar_one_or_none(), SourceNotFoundException())
-
         update_source_with_parsing_results(
             source := raise_if_none(
                 result.scalar_one_or_none(), SourceNotFoundException()
@@ -80,7 +83,7 @@ async def create_or_get_and_update_source(
         await db.commit()
         await db.refresh(source)
 
-        return source
+        return SourceItem.model_validate(source)
     else:
         raise InvalidBodyAndQueryParamsException()
 
@@ -99,7 +102,7 @@ async def get_and_update_source_by_uuid(
     await db.commit()
     await db.refresh(source)
 
-    return source
+    return SourceItem.model_validate(source)
 
 
 @source_items_router.delete("/{uid}")

@@ -1,9 +1,13 @@
 import re
 import yaml
+import logging
 import importlib
 from typing import Optional, Type, Dict, Any
 
 from .abstract_parser import AbstractParser
+
+
+PARSER_MANAGER_LOGGER = logging.getLogger(__name__)
 
 
 class ParserManager:
@@ -24,8 +28,12 @@ class ParserManager:
             module = importlib.import_module(module_name)
             parser_class = getattr(module, class_name)
 
+            if source_type not in cls.by_url_pattern.keys():
+                cls.by_url_pattern[url_pattern] = {}
+
             cls.by_source_type[source_type] = parser_class
-            cls.by_url_pattern[url_pattern] = parser_class
+            cls.by_url_pattern[url_pattern]["class"] = parser_class
+            cls.by_url_pattern[url_pattern]["source_type"] = source_type
 
     @classmethod
     def get_parser_by_url(cls, url: str) -> Optional[Type[AbstractParser]]:
