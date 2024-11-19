@@ -6,12 +6,18 @@ from pydantic import BaseModel, HttpUrl
 class SourceItem(BaseModel):
     uid: UUID
     url: HttpUrl
-    source_type: Optional[str] = None
+    source_type: str
     last_check_ts: Optional[int] = None
     is_publicated: Optional[bool] = False
+    price: str
 
     class Config:
         from_attributes = True
+
+
+class SourceParseResults(BaseModel):
+    is_publicated: bool
+    price: str
 
 
 class SourceCreateRequest(BaseModel):

@@ -2,17 +2,23 @@ import logging
 from uuid import UUID
 from typing import Optional
 
+from pydantic import HttpUrl
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends, Query
 
-from pydantic import HttpUrl
 from models import SourceModel
 from database import get_async_db
+from parsers.core import ParserManager
+from utils.source import update_source_with_parsing_results
 from utils.raise_if import raise_if_none, raise_if_not_none
 from api.schemas.source import SourceItem, SourceCreateRequest
-from api.exceptions.source import SourceNotFoundException, SourceAlreadyExistsException
-from app.api.exceptions.body import InvalidBodyAndQueryParamsException
+from api.exceptions.body import InvalidBodyAndQueryParamsException
+from api.exceptions.source import (
+    SourceNotFoundException,
+    SourceAlreadyExistsException,
+    UndefinedSourceTypeException,
+)
 
 
 source_items_router = APIRouter(prefix="/source-items")
@@ -43,7 +49,14 @@ async def create_or_get_and_update_source(
         )
         raise_if_not_none(result.scalar_one_or_none(), SourceAlreadyExistsException())
 
-        new_source = SourceModel(url=str(request.url))
+        new_source = SourceModel(
+            url=str(request.url),
+            source_type=raise_if_none(
+                ParserManager.get_source_type_by_url(str(request.url)),
+                UndefinedSourceTypeException(),
+            ),
+        )
+
         db.add(new_source)
         await db.commit()
         await db.refresh(new_source)
@@ -55,7 +68,14 @@ async def create_or_get_and_update_source(
         )
         source = raise_if_none(result.scalar_one_or_none(), SourceNotFoundException())
 
-        # TODO: Perform updates to `source` here
+        update_source_with_parsing_results(
+            source := raise_if_none(
+                result.scalar_one_or_none(), SourceNotFoundException()
+            ),
+            ParserManager.get_parser_by_source_type(source.source_type).parse(
+                source.url
+            ),
+        )
 
         await db.commit()
         await db.refresh(source)
@@ -70,9 +90,11 @@ async def get_and_update_source_by_uuid(
     uid: UUID, db: AsyncSession = Depends(get_async_db)
 ):
     result = await db.execute(select(SourceModel).filter(SourceModel.uid == uid))
-    source = raise_if_none(result.scalar_one_or_none(), SourceNotFoundException())
 
-    # TODO: Perform updates to `source` here
+    update_source_with_parsing_results(
+        source := raise_if_none(result.scalar_one_or_none(), SourceNotFoundException()),
+        ParserManager.get_parser_by_source_type(source.source_type).parse(source.url),
+    )
 
     await db.commit()
     await db.refresh(source)
