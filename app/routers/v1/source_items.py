@@ -71,11 +71,11 @@ async def create_or_get_and_update_source(
         result = await db.execute(
             select(SourceModel).filter(SourceModel.url == str(url))
         )
-        update_source_with_parsing_results(
+        source = await update_source_with_parsing_results(
             source := raise_if_none(
                 result.scalar_one_or_none(), SourceNotFoundException()
             ),
-            ParserManager.get_parser_by_source_type(source.source_type).parse(
+            await ParserManager.get_parser_by_source_type(source.source_type).parse(
                 source.url
             ),
         )
@@ -94,9 +94,11 @@ async def get_and_update_source_by_uuid(
 ):
     result = await db.execute(select(SourceModel).filter(SourceModel.uid == uid))
 
-    update_source_with_parsing_results(
+    source = await update_source_with_parsing_results(
         source := raise_if_none(result.scalar_one_or_none(), SourceNotFoundException()),
-        ParserManager.get_parser_by_source_type(source.source_type).parse(source.url),
+        await ParserManager.get_parser_by_source_type(source.source_type).parse(
+            source.url
+        ),
     )
 
     await db.commit()
