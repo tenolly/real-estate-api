@@ -13,11 +13,7 @@ logging.basicConfig(
     filename="logs.log",
 )
 
-
-ParserManager.load_parsers_from_yaml(
-    os.path.join(os.path.dirname(__file__), "providers.yaml")
-)
-
+ParserManager.init()
 
 app = FastAPI()
 app.include_router(v1_router)
