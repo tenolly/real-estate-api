@@ -2,7 +2,6 @@ import logging
 from uuid import UUID
 from typing import Optional
 
-from fastapi.responses import JSONResponse
 from pydantic import HttpUrl
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
