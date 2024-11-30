@@ -1,5 +1,5 @@
 import logging
-from logging import FileHandler
+from logging import FileHandler, Formatter
 from datetime import datetime
 from typing import List
 
@@ -8,7 +8,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from api.exceptions.source import SourceNotFoundException
 from models import SourceModel
-from database import get_async_db
+from database import AsyncSessionLocal
 from parsers.core import ParserManager
 from utils.raise_if import raise_if_none
 from utils.source import update_source_with_parsing_results
@@ -16,12 +16,19 @@ from utils.source import update_source_with_parsing_results
 
 class UpdateService:
     def __init__(self):
-        self.__logger = logging.getLogger()
+        file_handler = FileHandler("update_service.log", encoding="utf-8")
+        file_handler.setFormatter(
+            Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
+
+        self.__logger = logging.getLogger(__name__)
         self.__logger.setLevel(logging.INFO)
-        self.__logger.addHandler(FileHandler("update_service.log"))
+        self.__logger.addHandler(file_handler)
 
         self.__scheduler = AsyncIOScheduler()
-        self.__scheduler.add_job(self._update_sources, trigger="interval", hours=12)
+        self.__scheduler.add_job(
+            self._update_sources, trigger="interval", hours=12, max_instances=1
+        )
 
     def start(self) -> None:
         if not self.__scheduler.running:
@@ -35,15 +42,19 @@ class UpdateService:
 
         current_time_ts = datetime.now().timestamp()
 
-        async for db in get_async_db():
-            result = await db.execute(
-                select(SourceModel).filter(
-                    or_(
-                        SourceModel.last_check_ts is None,
-                        current_time_ts - SourceModel.last_check_ts > 12 * 60 * 60,
+        unupdated_sources = []
+        async with AsyncSessionLocal() as db:
+            try:
+                result = await db.execute(
+                    select(SourceModel).filter(
+                        or_(
+                            SourceModel.last_check_ts is None,
+                            current_time_ts - SourceModel.last_check_ts > 12 * 60 * 60,
+                        )
                     )
                 )
-            )
+            except Exception as e:
+                self.__logger.error(e, exc_info=True)
 
             unupdated_sources: List[SourceModel] = result.scalars().all()
             self.__logger.info(f"Unupdated sources: {len(unupdated_sources)}")

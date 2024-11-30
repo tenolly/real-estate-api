@@ -10,16 +10,16 @@ from parsers.core import ParserManager
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    filename="logs.log",
+    filename="app.log",
 )
 
 ParserManager.init()
 
 
-# async def startup():
-#    service = UpdateService()
-#    service.start()
+async def startup():
+    service = UpdateService()
+    service.start()
 
 
-app = FastAPI()
+app = FastAPI(on_startup=[startup])
 app.include_router(v1_router)
