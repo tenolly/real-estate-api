@@ -48,13 +48,14 @@ class UpdateService:
                 result = await db.execute(
                     select(SourceModel).filter(
                         or_(
-                            SourceModel.last_check_ts is None,
+                            SourceModel.last_check_ts == None,
                             current_time_ts - SourceModel.last_check_ts > 12 * 60 * 60,
                         )
                     )
                 )
             except Exception as e:
                 self.__logger.error(e, exc_info=True)
+                return
 
             unupdated_sources: List[SourceModel] = result.scalars().all()
             self.__logger.info(f"Unupdated sources: {len(unupdated_sources)}")
@@ -67,18 +68,24 @@ class UpdateService:
                     logging.error(
                         f"Unable to update source {source.url} with type {source.source_type}"
                     )
+                    continue
+                except Exception as e:
+                    self.__logger.error(e, exc_info=True)
+                    continue
 
-                parser = await ParserManager.get_parser_by_source_type(
-                    source.source_type
-                )
-                parsing_results = await parser.parse(source.url)
+                try:
+                    parser = ParserManager.get_parser_by_source_type(source.source_type)
+                    parsing_results = await parser.parse(source.url)
 
-                updated_source = await update_source_with_parsing_results(
-                    source, parsing_results
-                )
+                    updated_source = await update_source_with_parsing_results(
+                        source, parsing_results
+                    )
 
-                await db.commit()
-                await db.refresh(updated_source)
+                    await db.commit()
+                    await db.refresh(updated_source)
+                except Exception as e:
+                    self.__logger.error(e, exc_info=True)
+                    continue
 
                 success_updates += 1
 
