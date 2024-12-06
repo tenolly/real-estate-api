@@ -14,3 +14,8 @@ docker system prune --all --volumes
 ```bash
 pytest
 ```
+
+# tests (docker)
+```bash
+docker-compose up test --build
+```

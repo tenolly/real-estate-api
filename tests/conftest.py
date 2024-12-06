@@ -1,3 +1,4 @@
+import asyncpg
 from asyncio import get_event_loop
 
 import pytest
@@ -5,9 +6,24 @@ from httpx import AsyncClient
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
-from app.main import app
 from models import Base
-from database import TEST_DATABASE_URL, get_async_db
+from app.main import app
+from database import TEST_DATABASE_URL, CONFIG, get_async_db
+
+
+async def check_and_create_db():
+    conn = await asyncpg.connect(
+        user=CONFIG.POSTGRES_USER,
+        password=CONFIG.POSTGRES_PASSWORD,
+        host=CONFIG.POSTGRES_HOST,
+        port=CONFIG.POSTGRES_PORT,
+    )
+
+    databases = await conn.fetch("SELECT datname FROM pg_database")
+    if not any(db["datname"] == CONFIG.POSTGRES_TEST_DB for db in databases):
+        await conn.execute(f"CREATE DATABASE {CONFIG.POSTGRES_TEST_DB}")
+
+    await conn.close()
 
 
 test_async_engine = create_async_engine(TEST_DATABASE_URL, echo=True)
@@ -18,6 +34,8 @@ TestAsyncSessionLocal = sessionmaker(
 
 @pytest.fixture(scope="module")
 async def setup_database():
+    await check_and_create_db()
+
     async with test_async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

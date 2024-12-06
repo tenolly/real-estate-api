@@ -13,13 +13,13 @@ RUN apt-get update && apt-get install -y \
 # install PDM
 RUN pip install -U pdm
 ENV PDM_CHECK_UPDATE=false
-COPY pyproject.toml pdm.lock README.md /
-COPY /app .
+
+COPY pyproject.toml pdm.lock pytest.ini .env /
+COPY /app /app
+COPY /tests /tests
 
 # install dependencies and project into the local packages directory
 RUN pdm install --check --prod --no-editable
 
 ENV PATH="/.venv/bin:$PATH"
-CMD python3 database.py && \
-    alembic upgrade head && \
-    uvicorn main:app --host 0.0.0.0 --port 8000
+CMD pytest
