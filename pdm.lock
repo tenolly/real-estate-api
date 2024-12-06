@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:317d19ff5d6954725c18051908fa49e2bc7e79acd65f060af64da69c0c8c0c6d"
+content_hash = "sha256:74d4693d4fa3a8f74c92defb56ff2d937e365ae8437371e0273538684cb72b09"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -44,7 +44,7 @@ files = [
 
 [[package]]
 name = "anyio"
-version = "4.6.2.post1"
+version = "4.7.0"
 requires_python = ">=3.9"
 summary = "High level compatibility layer for multiple asynchronous event loop implementations"
 groups = ["default"]
@@ -52,11 +52,11 @@ dependencies = [
     "exceptiongroup>=1.0.2; python_version < \"3.11\"",
     "idna>=2.8",
     "sniffio>=1.1",
-    "typing-extensions>=4.1; python_version < \"3.11\"",
+    "typing-extensions>=4.5; python_version < \"3.13\"",
 ]
 files = [
-    {file = "anyio-4.6.2.post1-py3-none-any.whl", hash = "sha256:6d170c36fba3bdd840c73d3868c1e777e33676a69c3a72cf0a0d5d6d8009b61d"},
-    {file = "anyio-4.6.2.post1.tar.gz", hash = "sha256:4c8bc31ccdb51c7f7bd251f51c609e038d63e34219b44aa86e47576389880b4c"},
+    {file = "anyio-4.7.0-py3-none-any.whl", hash = "sha256:ea60c3723ab42ba6fff7e8ccb0488c898ec538ff4df1f1d5e642c3601d07e352"},
+    {file = "anyio-4.7.0.tar.gz", hash = "sha256:2f834749c602966b7d456a7567cafcb309f96482b5081d14ac93ccd457f9dd48"},
 ]
 
 [[package]]
@@ -196,7 +196,7 @@ files = [
 
 [[package]]
 name = "fastapi"
-version = "0.115.5"
+version = "0.115.6"
 requires_python = ">=3.8"
 summary = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 groups = ["default"]
@@ -206,44 +206,45 @@ dependencies = [
     "typing-extensions>=4.8.0",
 ]
 files = [
-    {file = "fastapi-0.115.5-py3-none-any.whl", hash = "sha256:596b95adbe1474da47049e802f9a65ab2ffa9c2b07e7efee70eb8a66c9f2f796"},
-    {file = "fastapi-0.115.5.tar.gz", hash = "sha256:0e7a4d0dc0d01c68df21887cce0945e72d3c48b9f4f79dfe7a7d53aa08fbb289"},
+    {file = "fastapi-0.115.6-py3-none-any.whl", hash = "sha256:e9240b29e36fa8f4bb7290316988e90c381e5092e0cbe84e7818cc3713bcf305"},
+    {file = "fastapi-0.115.6.tar.gz", hash = "sha256:9ec46f7addc14ea472958a96aae5b5de65f39721a46aaf5705c480d9a8b76654"},
 ]
 
 [[package]]
 name = "fastapi-cli"
-version = "0.0.5"
+version = "0.0.6"
 requires_python = ">=3.8"
 summary = "Run and manage FastAPI apps from the command line with FastAPI CLI. 🚀"
 groups = ["default"]
 dependencies = [
+    "rich-toolkit>=0.11.1",
     "typer>=0.12.3",
     "uvicorn[standard]>=0.15.0",
 ]
 files = [
-    {file = "fastapi_cli-0.0.5-py3-none-any.whl", hash = "sha256:e94d847524648c748a5350673546bbf9bcaeb086b33c24f2e82e021436866a46"},
-    {file = "fastapi_cli-0.0.5.tar.gz", hash = "sha256:d30e1239c6f46fcb95e606f02cdda59a1e2fa778a54b64686b3ff27f6211ff9f"},
+    {file = "fastapi_cli-0.0.6-py3-none-any.whl", hash = "sha256:43288efee46338fae8902f9bf4559aed3aed639f9516f5d394a7ff19edcc8faf"},
+    {file = "fastapi_cli-0.0.6.tar.gz", hash = "sha256:2835a8f0c44b68e464d5cafe5ec205265f02dc1ad1d640db33a994ba3338003b"},
 ]
 
 [[package]]
 name = "fastapi-cli"
-version = "0.0.5"
+version = "0.0.6"
 extras = ["standard"]
 requires_python = ">=3.8"
 summary = "Run and manage FastAPI apps from the command line with FastAPI CLI. 🚀"
 groups = ["default"]
 dependencies = [
-    "fastapi-cli==0.0.5",
+    "fastapi-cli==0.0.6",
     "uvicorn[standard]>=0.15.0",
 ]
 files = [
-    {file = "fastapi_cli-0.0.5-py3-none-any.whl", hash = "sha256:e94d847524648c748a5350673546bbf9bcaeb086b33c24f2e82e021436866a46"},
-    {file = "fastapi_cli-0.0.5.tar.gz", hash = "sha256:d30e1239c6f46fcb95e606f02cdda59a1e2fa778a54b64686b3ff27f6211ff9f"},
+    {file = "fastapi_cli-0.0.6-py3-none-any.whl", hash = "sha256:43288efee46338fae8902f9bf4559aed3aed639f9516f5d394a7ff19edcc8faf"},
+    {file = "fastapi_cli-0.0.6.tar.gz", hash = "sha256:2835a8f0c44b68e464d5cafe5ec205265f02dc1ad1d640db33a994ba3338003b"},
 ]
 
 [[package]]
 name = "fastapi"
-version = "0.115.5"
+version = "0.115.6"
 extras = ["standard"]
 requires_python = ">=3.8"
 summary = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
@@ -251,15 +252,15 @@ groups = ["default"]
 dependencies = [
     "email-validator>=2.0.0",
     "fastapi-cli[standard]>=0.0.5",
-    "fastapi==0.115.5",
+    "fastapi==0.115.6",
     "httpx>=0.23.0",
     "jinja2>=2.11.2",
     "python-multipart>=0.0.7",
     "uvicorn[standard]>=0.12.0",
 ]
 files = [
-    {file = "fastapi-0.115.5-py3-none-any.whl", hash = "sha256:596b95adbe1474da47049e802f9a65ab2ffa9c2b07e7efee70eb8a66c9f2f796"},
-    {file = "fastapi-0.115.5.tar.gz", hash = "sha256:0e7a4d0dc0d01c68df21887cce0945e72d3c48b9f4f79dfe7a7d53aa08fbb289"},
+    {file = "fastapi-0.115.6-py3-none-any.whl", hash = "sha256:e9240b29e36fa8f4bb7290316988e90c381e5092e0cbe84e7818cc3713bcf305"},
+    {file = "fastapi-0.115.6.tar.gz", hash = "sha256:9ec46f7addc14ea472958a96aae5b5de65f39721a46aaf5705c480d9a8b76654"},
 ]
 
 [[package]]
@@ -279,7 +280,6 @@ version = "3.1.1"
 requires_python = ">=3.7"
 summary = "Lightweight in-process concurrent programming"
 groups = ["default"]
-marker = "(platform_machine == \"win32\" or platform_machine == \"WIN32\" or platform_machine == \"AMD64\" or platform_machine == \"amd64\" or platform_machine == \"x86_64\" or platform_machine == \"ppc64le\" or platform_machine == \"aarch64\") and python_version < \"3.13\""
 files = [
     {file = "greenlet-3.1.1-cp311-cp311-macosx_11_0_universal2.whl", hash = "sha256:e4d333e558953648ca09d64f13e6d8f0523fa705f51cae3f03b5983489958c70"},
     {file = "greenlet-3.1.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:09fc016b73c94e98e29af67ab7b9a879c307c6731a2c9da0db5a7d9b7edd1159"},
@@ -406,7 +406,7 @@ files = [
 
 [[package]]
 name = "mako"
-version = "1.3.6"
+version = "1.3.7"
 requires_python = ">=3.8"
 summary = "A super-fast templating language that borrows the best ideas from the existing templating languages."
 groups = ["default"]
@@ -414,8 +414,8 @@ dependencies = [
     "MarkupSafe>=0.9.2",
 ]
 files = [
-    {file = "Mako-1.3.6-py3-none-any.whl", hash = "sha256:a91198468092a2f1a0de86ca92690fb0cfc43ca90ee17e15d93662b4c04b241a"},
-    {file = "mako-1.3.6.tar.gz", hash = "sha256:9ec3a1583713479fae654f83ed9fa8c9a4c16b7bb0daba0e6bbebff50c0d983d"},
+    {file = "Mako-1.3.7-py3-none-any.whl", hash = "sha256:d18f990ad57f800ce8e76cbfb0b74afe471c293517e9f5003ace6dad5aa72c36"},
+    {file = "mako-1.3.7.tar.gz", hash = "sha256:20405b1232e0759f0e7d87b01f6bb94fce0761747f1cb876ecf90bd512d0b639"},
 ]
 
 [[package]]
@@ -497,6 +497,40 @@ files = [
 ]
 
 [[package]]
+name = "playwright"
+version = "1.49.0"
+requires_python = ">=3.9"
+summary = "A high-level API to automate web browsers"
+groups = ["default"]
+dependencies = [
+    "greenlet==3.1.1",
+    "pyee==12.0.0",
+]
+files = [
+    {file = "playwright-1.49.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:704532a2d8ba580ec9e1895bfeafddce2e3d52320d4eb8aa38e80376acc5cbb0"},
+    {file = "playwright-1.49.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:e453f02c4e5cc2db7e9759c47e7425f32e50ac76c76b7eb17c69eed72f01c4d8"},
+    {file = "playwright-1.49.0-py3-none-macosx_11_0_universal2.whl", hash = "sha256:37ae985309184472946a6eb1a237e5d93c9e58a781fa73b75c8751325002a5d4"},
+    {file = "playwright-1.49.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:68d94beffb3c9213e3ceaafa66171affd9a5d9162e0c8a3eed1b1132c2e57598"},
+    {file = "playwright-1.49.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7f12d2aecdb41fc25a624cb15f3e8391c252ebd81985e3d5c1c261fe93779345"},
+    {file = "playwright-1.49.0-py3-none-win32.whl", hash = "sha256:91103de52d470594ad375b512d7143fa95d6039111ae11a93eb4fe2f2b4a4858"},
+    {file = "playwright-1.49.0-py3-none-win_amd64.whl", hash = "sha256:34d28a2c2d46403368610be4339898dc9c34eb9f7c578207b4715c49743a072a"},
+]
+
+[[package]]
+name = "playwright-stealth"
+version = "1.0.6"
+requires_python = ">=3, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+summary = "playwright stealth"
+groups = ["default"]
+dependencies = [
+    "playwright",
+]
+files = [
+    {file = "playwright-stealth-1.0.6.tar.gz", hash = "sha256:b504d951d00fac755c7d13665a29611d415180510bd7d23f14ebc89439ba2043"},
+    {file = "playwright_stealth-1.0.6-py3-none-any.whl", hash = "sha256:b1b2bcf58eb6859aa53d42c49b91c4e27b74a6d13fc3d0c85eea513dd55efda3"},
+]
+
+[[package]]
 name = "pluggy"
 version = "1.5.0"
 requires_python = ">=3.8"
@@ -539,7 +573,7 @@ files = [
 
 [[package]]
 name = "pydantic"
-version = "2.10.2"
+version = "2.10.3"
 requires_python = ">=3.8"
 summary = "Data validation using Python type hints"
 groups = ["default"]
@@ -549,8 +583,8 @@ dependencies = [
     "typing-extensions>=4.12.2",
 ]
 files = [
-    {file = "pydantic-2.10.2-py3-none-any.whl", hash = "sha256:cfb96e45951117c3024e6b67b25cdc33a3cb7b2fa62e239f7af1378358a1d99e"},
-    {file = "pydantic-2.10.2.tar.gz", hash = "sha256:2bc2d7f17232e0841cbba4641e65ba1eb6fafb3a08de3a091ff3ce14a197c4fa"},
+    {file = "pydantic-2.10.3-py3-none-any.whl", hash = "sha256:be04d85bbc7b65651c5f8e6b9976ed9c6f41782a55524cef079a34a0bb82144d"},
+    {file = "pydantic-2.10.3.tar.gz", hash = "sha256:cb5ac360ce894ceacd69c403187900a02c4b20b693a9dd1d643e1effab9eadf9"},
 ]
 
 [[package]]
@@ -596,6 +630,20 @@ files = [
 ]
 
 [[package]]
+name = "pyee"
+version = "12.0.0"
+requires_python = ">=3.8"
+summary = "A rough port of Node.js's EventEmitter to Python with a few tricks of its own"
+groups = ["default"]
+dependencies = [
+    "typing-extensions",
+]
+files = [
+    {file = "pyee-12.0.0-py3-none-any.whl", hash = "sha256:7b14b74320600049ccc7d0e0b1becd3b4bd0a03c745758225e31a59f4095c990"},
+    {file = "pyee-12.0.0.tar.gz", hash = "sha256:c480603f4aa2927d4766eb41fa82793fe60a82cbfdb8d688e0d08c55a534e145"},
+]
+
+[[package]]
 name = "pygments"
 version = "2.18.0"
 requires_python = ">=3.8"
@@ -608,7 +656,7 @@ files = [
 
 [[package]]
 name = "pytest"
-version = "8.3.3"
+version = "8.3.4"
 requires_python = ">=3.8"
 summary = "pytest: simple powerful testing with Python"
 groups = ["default"]
@@ -621,8 +669,8 @@ dependencies = [
     "tomli>=1; python_version < \"3.11\"",
 ]
 files = [
-    {file = "pytest-8.3.3-py3-none-any.whl", hash = "sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2"},
-    {file = "pytest-8.3.3.tar.gz", hash = "sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181"},
+    {file = "pytest-8.3.4-py3-none-any.whl", hash = "sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6"},
+    {file = "pytest-8.3.4.tar.gz", hash = "sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761"},
 ]
 
 [[package]]
@@ -652,13 +700,13 @@ files = [
 
 [[package]]
 name = "python-multipart"
-version = "0.0.18"
+version = "0.0.19"
 requires_python = ">=3.8"
 summary = "A streaming multipart parser for Python"
 groups = ["default"]
 files = [
-    {file = "python_multipart-0.0.18-py3-none-any.whl", hash = "sha256:efe91480f485f6a361427a541db4796f9e1591afc0fb8e7a4ba06bfbc6708996"},
-    {file = "python_multipart-0.0.18.tar.gz", hash = "sha256:7a68db60c8bfb82e460637fa4750727b45af1d5e2ed215593f917f64694d34fe"},
+    {file = "python_multipart-0.0.19-py3-none-any.whl", hash = "sha256:f8d5b0b9c618575bf9df01c684ded1d94a338839bdd8223838afacfb4bb2082d"},
+    {file = "python_multipart-0.0.19.tar.gz", hash = "sha256:905502ef39050557b7a6af411f454bc19526529ca46ae6831508438890ce12cc"},
 ]
 
 [[package]]
@@ -694,6 +742,33 @@ dependencies = [
 files = [
     {file = "rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90"},
     {file = "rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098"},
+]
+
+[[package]]
+name = "rich-toolkit"
+version = "0.12.0"
+requires_python = ">=3.8"
+summary = "Rich toolkit for building command-line applications"
+groups = ["default"]
+dependencies = [
+    "click>=8.1.7",
+    "rich>=13.7.1",
+    "typing-extensions>=4.12.2",
+]
+files = [
+    {file = "rich_toolkit-0.12.0-py3-none-any.whl", hash = "sha256:a2da4416384410ae871e890db7edf8623e1f5e983341dbbc8cc03603ce24f0ab"},
+    {file = "rich_toolkit-0.12.0.tar.gz", hash = "sha256:facb0b40418010309f77abd44e2583b4936656f6ee5c8625da807564806a6c40"},
+]
+
+[[package]]
+name = "setuptools"
+version = "75.6.0"
+requires_python = ">=3.9"
+summary = "Easily download, build, install, upgrade, and uninstall Python packages"
+groups = ["default"]
+files = [
+    {file = "setuptools-75.6.0-py3-none-any.whl", hash = "sha256:ce74b49e8f7110f9bf04883b730f4765b774ef3ef28f722cce7c273d253aaf7d"},
+    {file = "setuptools-75.6.0.tar.gz", hash = "sha256:8199222558df7c86216af4f84c30e9b34a61d8ba19366cc914424cdbd28252f6"},
 ]
 
 [[package]]
@@ -759,7 +834,7 @@ files = [
 
 [[package]]
 name = "typer"
-version = "0.14.0"
+version = "0.15.1"
 requires_python = ">=3.7"
 summary = "Typer, build great CLIs. Easy to code. Based on Python type hints."
 groups = ["default"]
@@ -770,8 +845,8 @@ dependencies = [
     "typing-extensions>=3.7.4.3",
 ]
 files = [
-    {file = "typer-0.14.0-py3-none-any.whl", hash = "sha256:f476233a25770ab3e7b2eebf7c68f3bc702031681a008b20167573a4b7018f09"},
-    {file = "typer-0.14.0.tar.gz", hash = "sha256:af58f737f8d0c0c37b9f955a6d39000b9ff97813afcbeef56af5e37cf743b45a"},
+    {file = "typer-0.15.1-py3-none-any.whl", hash = "sha256:7994fb7b8155b64d3402518560648446072864beefd44aa2dc36972a5972e847"},
+    {file = "typer-0.15.1.tar.gz", hash = "sha256:a0588c0a7fa68a1978a069818657778f86abe6ff5ea6abf472f940a08bfe4f0a"},
 ]
 
 [[package]]
