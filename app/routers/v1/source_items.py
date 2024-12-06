@@ -1,6 +1,6 @@
 import logging
 from uuid import UUID
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import HttpUrl
 from sqlalchemy import select
@@ -10,8 +10,10 @@ from fastapi import APIRouter, Depends, Query
 from models import SourceModel
 from database import get_async_db
 from parsers.core import ParserManager
+from parsers.exceptions import ParserException
 from utils.source import update_source_with_parsing_results
 from utils.raise_if import raise_if_none, raise_if_not_none
+from api.schemas.error import ErrorResponse
 from api.schemas.source import SourceItem, SourceCreateRequest
 from api.exceptions.body import InvalidBodyAndQueryParamsException
 from api.exceptions.source import (
@@ -41,7 +43,7 @@ async def get_source_by_uuid(uid: UUID, db: AsyncSession = Depends(get_async_db)
     )
 
 
-@source_items_router.post("/", response_model=SourceItem)
+@source_items_router.post("/", response_model=Union[SourceItem, ErrorResponse])
 async def create_or_get_and_update_source(
     request: Optional[SourceCreateRequest] = None,
     url: Optional[HttpUrl] = Query(None),
@@ -70,14 +72,18 @@ async def create_or_get_and_update_source(
         result = await db.execute(
             select(SourceModel).filter(SourceModel.url == str(url))
         )
-        source = await update_source_with_parsing_results(
-            source := raise_if_none(
-                result.scalar_one_or_none(), SourceNotFoundException()
-            ),
-            await ParserManager.get_parser_by_source_type(source.source_type).parse(
-                source.url
-            ),
-        )
+
+        try:
+            source = await update_source_with_parsing_results(
+                source := raise_if_none(
+                    result.scalar_one_or_none(), SourceNotFoundException()
+                ),
+                await ParserManager.get_parser_by_source_type(source.source_type).parse(
+                    source.url
+                ),
+            )
+        except ParserException:
+            return {"detail": "unable to parse source"}
 
         await db.commit()
         await db.refresh(source)
@@ -87,18 +93,23 @@ async def create_or_get_and_update_source(
         raise InvalidBodyAndQueryParamsException()
 
 
-@source_items_router.post("/{uid}", response_model=SourceItem)
+@source_items_router.post("/{uid}", response_model=Union[SourceItem, ErrorResponse])
 async def get_and_update_source_by_uuid(
     uid: UUID, db: AsyncSession = Depends(get_async_db)
 ):
     result = await db.execute(select(SourceModel).filter(SourceModel.uid == uid))
 
-    source = await update_source_with_parsing_results(
-        source := raise_if_none(result.scalar_one_or_none(), SourceNotFoundException()),
-        await ParserManager.get_parser_by_source_type(source.source_type).parse(
-            source.url
-        ),
-    )
+    try:
+        source = await update_source_with_parsing_results(
+            source := raise_if_none(
+                result.scalar_one_or_none(), SourceNotFoundException()
+            ),
+            await ParserManager.get_parser_by_source_type(source.source_type).parse(
+                source.url
+            ),
+        )
+    except ParserException:
+        return {"detail": "unable to parse source"}
 
     await db.commit()
     await db.refresh(source)

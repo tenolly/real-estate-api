@@ -4,6 +4,7 @@ from typing import Optional, Type, Dict, List, Any, Union
 
 from .abstract_parser import AbstractParser
 from parsers.avito import AvitoParser
+from parsers.cian import CianParser
 
 
 PARSER_MANAGER_LOGGER = logging.getLogger(__name__)
@@ -15,7 +16,12 @@ class ParserManager:
             "source_type": "avito",
             "url_pattern": "^https:\/\/www\.avito\.ru(\/[\w\-._~:\/?#[\]@!$&'()*+,;=]*)?$",
             "parser_class": AvitoParser,
-        }
+        },
+        {
+            "source_type": "cian",
+            "url_pattern": "^https:\/\/[\w-]+\.cian\.ru(\/[\w\-._~:\/?#[\]@!$&'()*+,;=]*)?$",
+            "parser_class": CianParser,
+        },
     ]
 
     # For get methods

@@ -6,7 +6,7 @@ from parsers.exceptions import PriceNotFoundException
 from .core.browser.browser_instance import BrowserManager
 
 
-class AvitoParser(AbstractParser):
+class CianParser(AbstractParser):
     @classmethod
     async def parse(self, url: HttpUrl) -> SourceParseResults:
         browser_manager = BrowserManager()
@@ -18,7 +18,7 @@ class AvitoParser(AbstractParser):
 
         price = " ".join(
             await page.locator(
-                "xpath=//span[contains(@class, 'style-price-value')]"
+                "xpath=//div[@data-name='PriceInfo']/div/span"
             ).first.all_text_contents()
         ).replace(r"\xa", "")
 
@@ -26,7 +26,7 @@ class AvitoParser(AbstractParser):
             raise PriceNotFoundException()
 
         is_publicated = (
-            await page.query_selector("//div[contains(@class, 'closed-warning-block')]")
+            await page.query_selector("//div[@data-name='OfferUnpublished']")
         ) is None
 
         await page.close()
