@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:74d4693d4fa3a8f74c92defb56ff2d937e365ae8437371e0273538684cb72b09"
+content_hash = "sha256:3f8d68ab5ca24127bde8d87d5b94e36bd2786f328990815da4a71a7a9e2bcc11"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -497,40 +497,6 @@ files = [
 ]
 
 [[package]]
-name = "playwright"
-version = "1.49.0"
-requires_python = ">=3.9"
-summary = "A high-level API to automate web browsers"
-groups = ["default"]
-dependencies = [
-    "greenlet==3.1.1",
-    "pyee==12.0.0",
-]
-files = [
-    {file = "playwright-1.49.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:704532a2d8ba580ec9e1895bfeafddce2e3d52320d4eb8aa38e80376acc5cbb0"},
-    {file = "playwright-1.49.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:e453f02c4e5cc2db7e9759c47e7425f32e50ac76c76b7eb17c69eed72f01c4d8"},
-    {file = "playwright-1.49.0-py3-none-macosx_11_0_universal2.whl", hash = "sha256:37ae985309184472946a6eb1a237e5d93c9e58a781fa73b75c8751325002a5d4"},
-    {file = "playwright-1.49.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:68d94beffb3c9213e3ceaafa66171affd9a5d9162e0c8a3eed1b1132c2e57598"},
-    {file = "playwright-1.49.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7f12d2aecdb41fc25a624cb15f3e8391c252ebd81985e3d5c1c261fe93779345"},
-    {file = "playwright-1.49.0-py3-none-win32.whl", hash = "sha256:91103de52d470594ad375b512d7143fa95d6039111ae11a93eb4fe2f2b4a4858"},
-    {file = "playwright-1.49.0-py3-none-win_amd64.whl", hash = "sha256:34d28a2c2d46403368610be4339898dc9c34eb9f7c578207b4715c49743a072a"},
-]
-
-[[package]]
-name = "playwright-stealth"
-version = "1.0.6"
-requires_python = ">=3, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-summary = "playwright stealth"
-groups = ["default"]
-dependencies = [
-    "playwright",
-]
-files = [
-    {file = "playwright-stealth-1.0.6.tar.gz", hash = "sha256:b504d951d00fac755c7d13665a29611d415180510bd7d23f14ebc89439ba2043"},
-    {file = "playwright_stealth-1.0.6-py3-none-any.whl", hash = "sha256:b1b2bcf58eb6859aa53d42c49b91c4e27b74a6d13fc3d0c85eea513dd55efda3"},
-]
-
-[[package]]
 name = "pluggy"
 version = "1.5.0"
 requires_python = ">=3.8"
@@ -726,6 +692,26 @@ files = [
     {file = "PyYAML-6.0.2-cp311-cp311-win32.whl", hash = "sha256:11d8f3dd2b9c1207dcaf2ee0bbbfd5991f571186ec9cc78427ba5bd32afae4b5"},
     {file = "PyYAML-6.0.2-cp311-cp311-win_amd64.whl", hash = "sha256:e10ce637b18caea04431ce14fabcf5c64a1c61ec9c56b071a4b7ca131ca52d44"},
     {file = "pyyaml-6.0.2.tar.gz", hash = "sha256:d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"},
+]
+
+[[package]]
+name = "rebrowser-playwright"
+version = "1.49.0"
+requires_python = ">=3.9"
+summary = "A high-level API to automate web browsers"
+groups = ["default"]
+dependencies = [
+    "greenlet==3.1.1",
+    "pyee==12.0.0",
+]
+files = [
+    {file = "rebrowser_playwright-1.49.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:28c1c763bc98089cd2d6bcd25cc139dd03fded4a54d40c957b4506ab30e35187"},
+    {file = "rebrowser_playwright-1.49.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:5feaea2aab3d9dc76f9d2dd4f1cb9dded10b73cab6fa5960d11484116e18266b"},
+    {file = "rebrowser_playwright-1.49.0-py3-none-macosx_11_0_universal2.whl", hash = "sha256:4b440e903458dc1094ff3fc8cfde04b6001965511f3b86c6e676198ef2da40cc"},
+    {file = "rebrowser_playwright-1.49.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:e04f1b6181dbe2deeef9ddde7f1bd9c5cde01eea6804a487f25ab3be916b86f3"},
+    {file = "rebrowser_playwright-1.49.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:109bb5ed350d089a36a68c2bcdd77cffa5c186284b366bde67b5d7f6ce4ad085"},
+    {file = "rebrowser_playwright-1.49.0-py3-none-win32.whl", hash = "sha256:27da136424e81b71a805c49ac577b5aa71b0ce493929ede0f4157fa99b6770de"},
+    {file = "rebrowser_playwright-1.49.0-py3-none-win_amd64.whl", hash = "sha256:1f30b7b0f6885b9b1817a8c651705c45b47f1510cfa568cf8aa2c8ed9424aa6e"},
 ]
 
 [[package]]
