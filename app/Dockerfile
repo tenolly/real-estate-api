@@ -20,8 +20,8 @@ COPY /app .
 RUN pdm install --check --prod --no-editable
 
 ENV PATH="/.venv/bin:$PATH"
-CMD playwright install && \
-    playwright install-deps && \
+CMD rebrowser_playwright install-deps && \
+    rebrowser_playwright install && \
     python3 database.py && \
     alembic upgrade head && \
     uvicorn main:app --host 0.0.0.0 --port 8000

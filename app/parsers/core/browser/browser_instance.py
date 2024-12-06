@@ -1,5 +1,6 @@
 import os
 import asyncio
+
 from rebrowser_playwright.async_api import async_playwright, BrowserContext
 
 
@@ -22,13 +23,14 @@ class BrowserManager(metaclass=Singleton):
         if self.browser is not None:
             return await self._create_new_context()
 
-        self.context = await self.context.start()
-        self.browser = await self.context.chromium.launch(headless=False)
+        self.context = await self.context.__aenter__()
+        self.browser = await self.context.chromium.launch()
 
         return await self._create_new_context()
 
     async def _create_new_context(self) -> BrowserContext:
         context = await self.browser.new_context()
+
         await context.add_init_script(
             path=os.path.join(os.path.dirname(__file__), "stealth.min.js")
         )
