@@ -19,6 +19,7 @@ class BrowserManager(metaclass=Singleton):
     def __init__(self):
         self.browser = None
         self.context = async_playwright()
+        self.semaphore = asyncio.Semaphore(10)
 
     async def launch(self) -> BrowserContext:
         if self.browser is not None:
