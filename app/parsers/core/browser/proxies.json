@@ -1,3 +1,12 @@
 [
-
+    {
+        "server": "http://46.3.198.64:9891",
+        "username": "wTBQzq",
+        "password": "GAmf4y"
+    },
+    {
+        "server": "http://194.67.197.194:9297",
+        "username": "wTBQzq",
+        "password": "GAmf4y"
+    }
 ]
