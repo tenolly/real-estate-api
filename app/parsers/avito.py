@@ -12,7 +12,7 @@ class AvitoParser(AbstractParser):
         browser_manager = BrowserManager()
 
         async with browser_manager.semaphore:
-            context = await browser_manager.launch()
+            context = await browser_manager.launch(True)
 
             page = await context.new_page()
             await page.goto(url, wait_until="domcontentloaded")
