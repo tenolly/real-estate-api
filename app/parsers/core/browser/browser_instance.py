@@ -2,6 +2,7 @@ import os
 import json
 import random
 import asyncio
+from typing import Optional, Sequence
 
 from fake_useragent import FakeUserAgent
 from rebrowser_playwright.async_api import async_playwright, BrowserContext
@@ -27,12 +28,17 @@ class BrowserManager(metaclass=Singleton):
             open(os.path.join(os.path.dirname(__file__), "proxies.json")).read()
         )
 
-    async def launch(self, with_proxy: bool = False) -> BrowserContext:
+    async def launch(
+        self, cookies: Optional[Sequence] = None, with_proxy: bool = False
+    ) -> BrowserContext:
         if self.browser is not None:
-            return await self._create_new_context(with_proxy)
+            return await self._create_new_context(
+                cookies=cookies, with_proxy=with_proxy
+            )
 
         self.async_pw = await self.async_pw.__aenter__()
         self.browser = await self.async_pw.chromium.launch(
+            headless=True,
             args=[
                 "--disable-blink-features=AutomationControlled",
                 "--disable-extensions",
@@ -40,12 +46,14 @@ class BrowserManager(metaclass=Singleton):
                 "--enable-automation",
                 "--no-first-run",
                 "--enable-webgl",
-            ]
+            ],
         )
 
-        return await self._create_new_context(with_proxy)
+        return await self._create_new_context(cookies=cookies, with_proxy=with_proxy)
 
-    async def _create_new_context(self, with_proxy: bool = False) -> BrowserContext:
+    async def _create_new_context(
+        self, cookies: Optional[Sequence] = None, with_proxy: bool = False
+    ) -> BrowserContext:
         proxy = None
         if with_proxy:
             proxy = random.choice(self.proxies)
@@ -53,6 +61,9 @@ class BrowserManager(metaclass=Singleton):
         context = await self.browser.new_context(
             user_agent=await self._get_useragent(), proxy=proxy
         )
+
+        if cookies is not None:
+            await context.add_cookies(cookies)
 
         await context.add_init_script(
             path=os.path.join(os.path.dirname(__file__), "stealth.min.js")

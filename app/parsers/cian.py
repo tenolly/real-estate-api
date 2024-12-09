@@ -8,13 +8,13 @@ from .core.browser.browser_instance import BrowserManager
 
 class CianParser(AbstractParser):
     @classmethod
-    async def parse(self, url: HttpUrl) -> SourceParseResults:
+    async def parse(cls, url: HttpUrl) -> SourceParseResults:
         browser_manager = BrowserManager()
 
         async with browser_manager.semaphore:
-            try:
-                context = await browser_manager.launch()
+            context = await browser_manager.launch()
 
+            try:
                 page = await context.new_page()
                 await page.goto(url, wait_until="commit")
                 await page.wait_for_function(
@@ -33,6 +33,8 @@ class CianParser(AbstractParser):
                 is_publicated = (
                     await page.query_selector("//div[@data-name='OfferUnpublished']")
                 ) is None
+
+                await page.close()
             finally:
                 await context.close()
 
